@@ -398,7 +398,7 @@ def direct_link_generator(link):
     domain = urlparse(link).hostname
     if not domain:
         raise DirectDownloadLinkException("ERROR: Invalid URL")
-    elif Config().DEBRID_LINK_API and any(x in domain for x in debrid_link_sites):
+    elif Config.DEBRID_LINK_API and any(x in domain for x in debrid_link_sites):
         return debrid_link(link)
     elif "yadi.sk" in link or "disk.yandex." in link:
         return yandex_disk(link)
