@@ -604,7 +604,7 @@ def debrid_link(url):
     cget = create_scraper().request
     resp = cget(
         "POST",
-        f"https://debrid-link.com/api/v2/downloader/add?access_token={config_dict['DEBRID_LINK_API']}",
+        f"https://debrid-link.com/api/v2/downloader/add?access_token={Config.DEBRID_LINK_API}",
         data={"url": url},
     ).json()
     if resp["success"] != True:
