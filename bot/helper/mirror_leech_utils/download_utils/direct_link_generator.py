@@ -18,6 +18,7 @@ from ...ext_utils.exceptions import DirectDownloadLinkException
 from ...ext_utils.help_messages import PASSWORD_ERROR_MESSAGE
 from ...ext_utils.links_utils import is_share_link
 from ...ext_utils.status_utils import speed_string_to_bytes
+from bot import LOGGER, config_dict
 
 user_agent = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
@@ -398,7 +399,7 @@ def direct_link_generator(link):
     domain = urlparse(link).hostname
     if not domain:
         raise DirectDownloadLinkException("ERROR: Invalid URL")
-    elif Config.DEBRID_LINK_API and any(x in domain for x in debrid_link_sites):
+    elif config_dict["DEBRID_LINK_API"] and any(x in domain for x in debrid_link_sites):
         return debrid_link(link)
     elif "yadi.sk" in link or "disk.yandex." in link:
         return yandex_disk(link)
@@ -604,7 +605,7 @@ def debrid_link(url):
     cget = create_scraper().request
     resp = cget(
         "POST",
-        f"https://debrid-link.com/api/v2/downloader/add?access_token={Config.DEBRID_LINK_API}",
+        f"https://debrid-link.com/api/v2/downloader/add?access_token={config_dict['DEBRID_LINK_API']}",
         data={"url": url},
     ).json()
     if resp["success"] != True:
@@ -631,7 +632,7 @@ def debrid_link(url):
                 details["total_size"] += dl["size"]
             details["contents"].append(item)
         return details
-
+        
 def buzzheavier(url):
     """
     Generate a direct download link for buzzheavier URLs.
