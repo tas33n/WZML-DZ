@@ -398,7 +398,7 @@ def direct_link_generator(link):
     domain = urlparse(link).hostname
     if not domain:
         raise DirectDownloadLinkException("ERROR: Invalid URL")
-    elif config_dict["DEBRID_LINK_API"] and any(x in domain for x in debrid_link_sites):
+    elif Config.DEBRID_LINK_API and any(x in domain for x in debrid_link_sites):
         return debrid_link(link)
     elif "yadi.sk" in link or "disk.yandex." in link:
         return yandex_disk(link)
@@ -604,7 +604,7 @@ def debrid_link(url):
     cget = create_scraper().request
     resp = cget(
         "POST",
-        f"https://debrid-link.com/api/v2/downloader/add?access_token={config_dict['DEBRID_LINK_API']}",
+        f"https://debrid-link.com/api/v2/downloader/add?access_token={Config.DEBRID_LINK_API}",
         data={"url": url},
     ).json()
     if resp["success"] != True:
