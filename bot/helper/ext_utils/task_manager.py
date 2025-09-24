@@ -60,11 +60,9 @@ async def stop_duplicate_check(listener):
 
 
 async def check_running_tasks(listener, state="dl"):
-    all_limit = int(Config.QUEUE_ALL or 0)
+    all_limit = Config.QUEUE_ALL or 0
     state_limit = (
-        int(Config.QUEUE_DOWNLOAD or 0)
-        if state == "dl"
-        else int(Config.QUEUE_UPLOAD or 0)
+        Config.QUEUE_DOWNLOAD or 0 if state == "dl" else Config.QUEUE_UPLOAD or 0
     )
     event = None
     is_over_limit = False
